@@ -388,3 +388,82 @@ window.addEventListener('scroll', debounce(function() {
 // === CONSOLE MESSAGE ===
 console.log('%cModjadji\'s Shuttle Services', 'color: #c9a961; font-size: 24px; font-weight: bold;');
 console.log('%cPremium Executive Transportation', 'color: #1a1a1a; font-size: 14px;');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const imageUrls = [
+        './Images/529937930_122098660280973769_1105726797082522831_n.jpg',
+        './Images/531721627_122096801210978526_4997815181269426571_n.jpg',
+        //'./Images/532270598_122100346346973769_973121771030382272_n.jpg',
+        //'./Images/image4.jpg', // Add more as needed
+
+    ];
+    
+    const carousel = document.querySelector('.image-carousel');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
+    let currentIndex = 0;
+    
+    // Create image elements
+    imageUrls.forEach((url, index) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = `Luxury Vehicle ${index + 1}`;
+        img.style.display = index === 0 ? 'block' : 'none';
+        carousel.appendChild(img);
+    });
+    
+    const images = carousel.querySelectorAll('img');
+    
+    function showImage(index) {
+        images.forEach(img => img.style.display = 'none');
+        images[index].style.display = 'block';
+        currentIndex = index;
+    }
+    
+    function nextImage() {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= images.length) newIndex = 0;
+        showImage(newIndex);
+    }
+    
+    function prevImage() {
+        let newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = images.length - 1;
+        showImage(newIndex);
+    }
+    
+    // Add event listeners
+    nextBtn.addEventListener('click', nextImage);
+    prevBtn.addEventListener('click', prevImage);
+    
+    // Auto-rotate every 5 seconds (optional)
+    setInterval(nextImage, 5000);
+});
