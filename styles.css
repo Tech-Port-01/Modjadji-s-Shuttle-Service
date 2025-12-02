@@ -418,6 +418,22 @@ p {
     margin: 0;
 }
 
+/* .about-image {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+*/
+
+.about-image img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+} 
+
+/* //////////////////////// carousel start ///////////////////////////// */
+
 .about-image {
     position: relative;
     border-radius: 4px;
@@ -425,11 +441,44 @@ p {
     box-shadow: var(--shadow-lg);
 }
 
-.about-image img {
-    width: 100%;
-    height: 600px;
-    object-fit: cover;
+.image-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px; /* Optional rounded corners */
 }
+
+.image-carousel img {
+    width: 100%;
+    height: auto;
+    display: none;
+    transition: opacity 0.5s ease;
+}
+
+.image-carousel img.active {
+    display: block;
+    opacity: 1;
+}
+
+.carousel-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.carousel-controls button {
+    background: rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+}
+/* ///////////////////////// carousel end /////////////////////////// */
 
 .about-badge {
     position: absolute;
