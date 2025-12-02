@@ -100,14 +100,37 @@
                     </div>
                 </div>
                 
+                <!-- 
+
                 <div class="about-image">
                     <img src="./Images/529937930_122098660280973769_1105726797082522831_n.jpg" alt="Trans">
-                    <!-- <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80" alt="Luxury executive vehicle"> -->
                     <div class="about-badge">
                         <span class="badge-number">15+</span>
                         <span class="badge-text">Years of Excellence</span>
                     </div>
                 </div>
+
+                 -->
+
+                <!-- ////////////////////////////////////////////// -->
+                
+                <div class="about-image">
+                    <div class="image-carousel">
+                        <!-- Images will be added here by JavaScript -->
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="prev-btn">◀</button>
+                        <button class="next-btn">▶</button>
+                    </div>
+                    <div class="about-badge">
+                        <span class="badge-number">15+</span>
+                        <span class="badge-text">Years of Excellence</span>
+                    </div>
+                </div>
+
+
+                 <!-- ///////////////////////////////////////////// -->
+
             </div>
         </div>
     </section>
@@ -213,6 +236,27 @@
             </div>
             
             <div class="fleet-grid">
+
+                <div class="fleet-card">
+                    <div class="fleet-image-wrapper">
+                        <!-- <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80" alt="Executive sedan"> -->
+                        <img src="Images\iris.avif" alt="">
+                    </div>
+                    <div class="fleet-details">
+                        <div class="fleet-icon-badge">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3>Premier Sedans</h3>
+                        <p>Premium sedans offering elevated comfort and refined elegance.</p>
+                        <ul class="fleet-specs">
+                            <li><i class="fas fa-users"></i> Up to 3 passengers</li>
+                            <li><i class="fas fa-suitcase"></i> 3 luggage pieces</li>
+                            <li><i class="fas fa-wifi"></i> WiFi available</li>
+                        </ul>
+                        <a href="#booking" class="btn-fleet">Reserve Now</a>
+                    </div>
+                </div>
+
                 <div class="fleet-card">
                     <div class="fleet-image-wrapper">
                         <!-- <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80" alt="Executive sedan"> -->
@@ -227,7 +271,8 @@
                         <ul class="fleet-specs">
                             <li><i class="fas fa-users"></i> Up to 3 passengers</li>
                             <li><i class="fas fa-suitcase"></i> 3 luggage pieces</li>
-                            <li><i class="fas fa-wifi"></i> WiFi available</li>
+                            <li><i class="fas fa-clock"></i> Reliable service</li>
+
                         </ul>
                         <a href="#booking" class="btn-fleet">Reserve Now</a>
                     </div>
@@ -265,7 +310,27 @@
                         <h3>Executive Vans</h3>
                         <p>Comfortable transportation for medium-sized groups</p>
                         <ul class="fleet-specs">
-                            <li><i class="fas fa-users"></i> Up to 10 passengers</li>
+                            <li><i class="fas fa-users"></i> Up to 6 passengers</li>
+                            <li><i class="fas fa-suitcase"></i> Ample luggage space</li>
+                            <li><i class="fas fa-couch"></i> Premium seating</li>
+                        </ul>
+                        <a href="#booking" class="btn-fleet">Reserve Now</a>
+                    </div>
+                </div>
+
+                <div class="fleet-card">
+                    <div class="fleet-image-wrapper">
+                        <!-- <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80" alt="Executive van"> -->
+                        <img src="Images\hyundai-staria-0-1738324805.avif" alt="">
+                    </div>
+                    <div class="fleet-details">
+                        <div class="fleet-icon-badge">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <h3>MPV</h3>
+                        <p>Perfect for group travel, combining space, comfort, and futuristic style.</p>
+                        <ul class="fleet-specs">
+                            <li><i class="fas fa-users"></i> Up to 7 passengers</li>
                             <li><i class="fas fa-suitcase"></i> Ample luggage space</li>
                             <li><i class="fas fa-couch"></i> Premium seating</li>
                         </ul>
@@ -282,7 +347,7 @@
                         <div class="fleet-icon-badge">
                             <i class="fas fa-bus-alt"></i>
                         </div>
-                        <h3>Luxury Minibuses</h3>
+                        <h3>Group Minibuses</h3>
                         <p>Perfect for corporate groups and large event transportation</p>
                         <ul class="fleet-specs">
                             <li><i class="fas fa-users"></i> 15+ passengers</li>
@@ -391,6 +456,7 @@
                                 <option value="">Any</option>
                                 <option value="sedan">Executive Sedan</option>
                                 <option value="suv">Luxury 7-Seater</option>
+                                <option value="mpv">Multi-Purpose Vehicle</option>
                                 <option value="van">Executive Van</option>
                                 <option value="minibus">Luxury Minibus</option>
                             </select>
