@@ -467,3 +467,68 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-rotate every 5 seconds (optional)
     setInterval(nextImage, 5000);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function submitBookingRequest() {
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const pickup = document.getElementById('pickup').value;
+    const dropoff = document.getElementById('dropoff').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const passengers = document.getElementById('passengers').value;
+    
+    // Build URL with parameters
+    const paymentURL = 'https://shuttle-payment-system.vercel.app/';
+    const params = new URLSearchParams({
+        from: 'booking',
+        name: name,
+        email: email,
+        phone: phone,
+        pickup: pickup,
+        dropoff: dropoff,
+        date: date,
+        time: time,
+        passengers: passengers
+    });
+    
+    // Redirect to payment system
+    window.location.href = `${paymentURL}?${params.toString()}`;
+}
+
+// For Fleet section - Reserve button
+function reserveVehicle(vehicleType) {
+    const paymentURL = 'https://shuttle-payment-system.vercel.app/';
+    const params = new URLSearchParams({
+        from: 'fleet',
+        vehicle: vehicleType
+    });
+    
+    window.location.href = `${paymentURL}?${params.toString()}`;
+}
