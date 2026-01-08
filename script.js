@@ -532,3 +532,87 @@ function reserveVehicle(vehicleType) {
     
     window.location.href = `${paymentURL}?${params.toString()}`;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===== REDIRECT TO PAYMENT SYSTEM =====
+function submitToPaymentSystem() {
+    // Validate required fields
+    const name = document.getElementById('name')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+    const phone = document.getElementById('phone')?.value.trim();
+    const pickup = document.getElementById('pickup')?.value.trim();
+    const dropoff = document.getElementById('dropoff')?.value.trim();
+    
+    // Check if required fields are filled
+    if (!name || !email || !phone || !pickup || !dropoff) {
+        alert('Please fill in all required fields before continuing');
+        return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Get optional fields
+    const date = document.getElementById('date')?.value || '';
+    const time = document.getElementById('time')?.value || '';
+    const passengers = document.getElementById('passengers')?.value || '1';
+    
+    // Build payment system URL with all data
+    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
+    
+    const params = new URLSearchParams({
+        from: 'booking',
+        name: encodeURIComponent(name),
+        email: encodeURIComponent(email),
+        phone: encodeURIComponent(phone),
+        pickup: encodeURIComponent(pickup),
+        dropoff: encodeURIComponent(dropoff),
+        date: date,
+        time: time,
+        passengers: passengers
+    });
+    
+    // Show loading message
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Payment System...';
+    
+    // Redirect after short delay
+    setTimeout(() => {
+        window.location.href = `${paymentSystemURL}?${params.toString()}`;
+    }, 500);
+}
+
+// ===== FLEET RESERVE BUTTONS =====
+function reserveVehicle(vehicleType) {
+    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
+    
+    const params = new URLSearchParams({
+        from: 'fleet',
+        vehicle: vehicleType
+    });
+    
+    // Redirect to payment system with selected vehicle
+    window.location.href = `${paymentSystemURL}?${params.toString()}`;
+}
