@@ -141,11 +141,20 @@ p {
 /* === BUTTONS === */
 
 button {
+   /* all: unset;*/
+    display: inline-block;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+
+.reserve-btn {
     all: unset;
     display: inline-block;
     font-family: inherit;
     cursor: pointer;
 }
+
 
 .btn {
     display: inline-block;
@@ -1140,6 +1149,7 @@ button {
         height: 45px;
     }
 }
+
 
 
 
