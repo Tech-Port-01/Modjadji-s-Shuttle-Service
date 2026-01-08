@@ -182,7 +182,7 @@ p {
     font-size: 0.875rem;
 }
 
-.btn-fleet {
+.btn-fleet, .reserve-btn {
     display: inline-block;
     margin-top: 1rem;
     padding: 0.75rem 2rem;
@@ -1127,3 +1127,4 @@ p {
         height: 45px;
     }
 }
+
