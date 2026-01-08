@@ -201,6 +201,11 @@ p {
     color: var(--color-primary);
 }
 
+.reserve-btn:hover{
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
 /* === HEADER & NAVIGATION === */
 .header {
     position: fixed;
@@ -1127,4 +1132,5 @@ p {
         height: 45px;
     }
 }
+
 
