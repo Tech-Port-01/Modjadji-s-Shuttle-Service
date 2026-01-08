@@ -139,6 +139,14 @@ p {
 }
 
 /* === BUTTONS === */
+
+button {
+    all: unset;
+    display: inline-block;
+    font-family: inherit;
+    cursor: pointer;
+}
+
 .btn {
     display: inline-block;
     padding: 1rem 2.5rem;
@@ -1132,5 +1140,6 @@ p {
         height: 45px;
     }
 }
+
 
 
