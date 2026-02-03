@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initBookingForm();
     initNewsletterForm();
     initAnimations();
+    initImageCarousel();
 });
 
 // === MOBILE MENU FUNCTIONALITY ===
@@ -168,39 +169,6 @@ function initBackToTop() {
     });
 }
 
-// === BOOKING FORM FUNCTIONALITY ===
-// function initBookingForm() {
-//     const bookingForm = document.getElementById('bookingForm');
-    
-//     if (bookingForm) {
-//         // Set minimum date to today
-//         const dateInput = document.getElementById('date');
-//         const today = new Date().toISOString().split('T')[0];
-//         dateInput.setAttribute('min', today);
-        
-//         // Handle form submission
-//         bookingForm.addEventListener('submit', function(e) {
-//             e.preventDefault();
-            
-//             // Validate form
-//             if (validateBookingForm()) {
-//                 // Get form data
-//                 const formData = new FormData(bookingForm);
-//                 const data = Object.fromEntries(formData);
-                
-//                 // Show success message
-//                 showNotification('Thank you for your booking request! We will contact you shortly to confirm your reservation.', 'success');
-                
-//                 // Log form data (in production, this would be sent to a server)
-//                 console.log('Booking Request:', data);
-                
-//                 // Reset form
-//                 bookingForm.reset();
-//             }
-//         });
-//     }
-// }
-
 // === BOOKING FORM FUNCTIONALITY (UPDATED) ===
 function initBookingForm() {
     const bookingForm = document.getElementById('bookingForm');
@@ -211,7 +179,7 @@ function initBookingForm() {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
         
-        // Handle form submission - ALWAYS redirect
+        // Handle form submission - ALWAYS redirect to payment system
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
             submitToPaymentSystem(e);
@@ -219,27 +187,74 @@ function initBookingForm() {
     }
 }
 
-// === VALIDATE BOOKING FORM ===
-function validateBookingForm() {
-    const requiredFields = document.querySelectorAll('#bookingForm [required]');
-    let isValid = true;
+// === REDIRECT TO PAYMENT SYSTEM (UPDATED - NO VALIDATION BLOCKING) ===
+function submitToPaymentSystem(event) {
+    // Prevent default form submission
+    if (event) {
+        event.preventDefault();
+    }
     
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.style.borderColor = '#e74c3c';
-            
-            setTimeout(() => {
-                field.style.borderColor = '';
-            }, 3000);
+    // Payment system URL
+    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
+    
+    // Collect all form fields
+    const formData = {
+        // Personal Information
+        fullName: document.getElementById('fullName')?.value.trim() || '',
+        email: document.getElementById('email')?.value.trim() || '',
+        phone: document.getElementById('phone')?.value.trim() || '',
+        
+        // Service Details
+        serviceType: document.getElementById('serviceType')?.value || '',
+        pickup: document.getElementById('pickup')?.value.trim() || '',
+        destination: document.getElementById('destination')?.value.trim() || '',
+        
+        // Date & Time
+        date: document.getElementById('date')?.value || '',
+        time: document.getElementById('time')?.value || '',
+        
+        // Passenger & Vehicle
+        passengers: document.getElementById('passengers')?.value || '',
+        vehicle: document.getElementById('vehicle')?.value || '',
+        
+        // Additional Info
+        specialRequests: document.getElementById('specialRequests')?.value.trim() || '',
+        
+        // Source tracking
+        from: 'booking'
+    };
+    
+    // Build query parameters - only include non-empty fields
+    const params = new URLSearchParams();
+    
+    Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+            params.append(key, formData[key]);
         }
     });
     
-    if (!isValid) {
-        showNotification('Please fill in all required fields.', 'error');
+    // Show loading state
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Payment System...';
     }
     
-    return isValid;
+    // Redirect immediately
+    window.location.href = `${paymentSystemURL}?${params.toString()}`;
+}
+
+// === FLEET RESERVE BUTTONS ===
+function reserveVehicle(vehicleType) {
+    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
+    
+    const params = new URLSearchParams({
+        from: 'fleet',
+        vehicle: vehicleType
+    });
+    
+    // Redirect to payment system with selected vehicle
+    window.location.href = `${paymentSystemURL}?${params.toString()}`;
 }
 
 // === NEWSLETTER FORM ===
@@ -367,6 +382,58 @@ function initAnimations() {
     });
 }
 
+// === IMAGE CAROUSEL FOR ABOUT SECTION ===
+function initImageCarousel() {
+    const imageUrls = [
+        './Images/529937930_122098660280973769_1105726797082522831_n.jpg',
+        './Images/531721627_122096801210978526_4997815181269426571_n.jpg',
+    ];
+    
+    const carousel = document.querySelector('.image-carousel');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
+    if (!carousel) return;
+    
+    let currentIndex = 0;
+    
+    // Create image elements
+    imageUrls.forEach((url, index) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = `Luxury Vehicle ${index + 1}`;
+        img.style.display = index === 0 ? 'block' : 'none';
+        carousel.appendChild(img);
+    });
+    
+    const images = carousel.querySelectorAll('img');
+    
+    function showImage(index) {
+        images.forEach(img => img.style.display = 'none');
+        images[index].style.display = 'block';
+        currentIndex = index;
+    }
+    
+    function nextImage() {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= images.length) newIndex = 0;
+        showImage(newIndex);
+    }
+    
+    function prevImage() {
+        let newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = images.length - 1;
+        showImage(newIndex);
+    }
+    
+    // Add event listeners
+    if (nextBtn) nextBtn.addEventListener('click', nextImage);
+    if (prevBtn) prevBtn.addEventListener('click', prevImage);
+    
+    // Auto-rotate every 5 seconds
+    setInterval(nextImage, 5000);
+}
+
 // === LAZY LOADING IMAGES ===
 if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver(function(entries, observer) {
@@ -406,224 +473,3 @@ window.addEventListener('scroll', debounce(function() {
 // === CONSOLE MESSAGE ===
 console.log('%cModjadji\'s Shuttle Services', 'color: #c9a961; font-size: 24px; font-weight: bold;');
 console.log('%cPremium Executive Transportation', 'color: #1a1a1a; font-size: 14px;');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const imageUrls = [
-        './Images/529937930_122098660280973769_1105726797082522831_n.jpg',
-        './Images/531721627_122096801210978526_4997815181269426571_n.jpg',
-        //'./Images/532270598_122100346346973769_973121771030382272_n.jpg',
-        //'./Images/image4.jpg', // Add more as needed
-
-    ];
-    
-    const carousel = document.querySelector('.image-carousel');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    
-    let currentIndex = 0;
-    
-    // Create image elements
-    imageUrls.forEach((url, index) => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = `Luxury Vehicle ${index + 1}`;
-        img.style.display = index === 0 ? 'block' : 'none';
-        carousel.appendChild(img);
-    });
-    
-    const images = carousel.querySelectorAll('img');
-    
-    function showImage(index) {
-        images.forEach(img => img.style.display = 'none');
-        images[index].style.display = 'block';
-        currentIndex = index;
-    }
-    
-    function nextImage() {
-        let newIndex = currentIndex + 1;
-        if (newIndex >= images.length) newIndex = 0;
-        showImage(newIndex);
-    }
-    
-    function prevImage() {
-        let newIndex = currentIndex - 1;
-        if (newIndex < 0) newIndex = images.length - 1;
-        showImage(newIndex);
-    }
-    
-    // Add event listeners
-    nextBtn.addEventListener('click', nextImage);
-    prevBtn.addEventListener('click', prevImage);
-    
-    // Auto-rotate every 5 seconds (optional)
-    setInterval(nextImage, 5000);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function submitBookingRequest() {
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const pickup = document.getElementById('pickup').value;
-    const dropoff = document.getElementById('dropoff').value;
-    const date = document.getElementById('date').value;
-    const time = document.getElementById('time').value;
-    const passengers = document.getElementById('passengers').value;
-    
-    // Build URL with parameters
-    const paymentURL = 'https://shuttle-payment-system.vercel.app/';
-    const params = new URLSearchParams({
-        from: 'booking',
-        name: name,
-        email: email,
-        phone: phone,
-        pickup: pickup,
-        dropoff: dropoff,
-        date: date,
-        time: time,
-        passengers: passengers
-    });
-    
-    // Redirect to payment system
-    window.location.href = `${paymentURL}?${params.toString()}`;
-}
-
-// For Fleet section - Reserve button
-function reserveVehicle(vehicleType) {
-    const paymentURL = 'https://shuttle-payment-system.vercel.app/';
-    const params = new URLSearchParams({
-        from: 'fleet',
-        vehicle: vehicleType
-    });
-    
-    window.location.href = `${paymentURL}?${params.toString()}`;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ===== REDIRECT TO PAYMENT SYSTEM (UPDATED) =====
-function submitToPaymentSystem(event) {
-    // Prevent default form submission
-    if (event) {
-        event.preventDefault();
-    }
-    
-    // Payment system URL
-    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
-    
-    // Collect all form fields
-    const formData = {
-        // Personal Information
-        fullName: document.getElementById('fullName')?.value.trim() || '',
-        email: document.getElementById('email')?.value.trim() || '',
-        phone: document.getElementById('phone')?.value.trim() || '',
-        
-        // Service Details
-        serviceType: document.getElementById('serviceType')?.value || '',
-        pickup: document.getElementById('pickup')?.value.trim() || '',
-        destination: document.getElementById('destination')?.value.trim() || '',
-        
-        // Date & Time
-        date: document.getElementById('date')?.value || '',
-        time: document.getElementById('time')?.value || '',
-        
-        // Passenger & Vehicle
-        passengers: document.getElementById('passengers')?.value || '',
-        vehicle: document.getElementById('vehicle')?.value || '',
-        
-        // Additional Info
-        specialRequests: document.getElementById('specialRequests')?.value.trim() || '',
-        
-        // Source tracking
-        from: 'booking'
-    };
-    
-    // Build query parameters - only include non-empty fields
-    const params = new URLSearchParams();
-    
-    Object.keys(formData).forEach(key => {
-        if (formData[key]) {
-            params.append(key, formData[key]);
-        }
-    });
-    
-    // Show loading state
-    const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Payment System...';
-    }
-    
-    // Redirect immediately (no delay needed)
-    window.location.href = `${paymentSystemURL}?${params.toString()}`;
-}
-
-
