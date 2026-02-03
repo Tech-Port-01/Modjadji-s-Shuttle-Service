@@ -551,68 +551,60 @@ function reserveVehicle(vehicleType) {
 
 
 
-// ===== REDIRECT TO PAYMENT SYSTEM =====
-function submitToPaymentSystem() {
-    // Validate required fields
-    const name = document.getElementById('name')?.value.trim();
-    const email = document.getElementById('email')?.value.trim();
-    const phone = document.getElementById('phone')?.value.trim();
-    const pickup = document.getElementById('pickup')?.value.trim();
-    const dropoff = document.getElementById('dropoff')?.value.trim();
-    
-    // Check if required fields are filled
-    if (!name || !email || !phone || !pickup || !dropoff) {
-        alert('Please fill in all required fields before continuing');
-        return;
+// ===== REDIRECT TO PAYMENT SYSTEM (UPDATED) =====
+function submitToPaymentSystem(event) {
+    // Prevent default form submission
+    if (event) {
+        event.preventDefault();
     }
     
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-    
-    // Get optional fields
-    const date = document.getElementById('date')?.value || '';
-    const time = document.getElementById('time')?.value || '';
-    const passengers = document.getElementById('passengers')?.value || '1';
-    
-    // Build payment system URL with all data
+    // Payment system URL
     const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
     
-    const params = new URLSearchParams({
-        from: 'booking',
-        name: encodeURIComponent(name),
-        email: encodeURIComponent(email),
-        phone: encodeURIComponent(phone),
-        pickup: encodeURIComponent(pickup),
-        dropoff: encodeURIComponent(dropoff),
-        date: date,
-        time: time,
-        passengers: passengers
+    // Collect all form fields
+    const formData = {
+        // Personal Information
+        fullName: document.getElementById('fullName')?.value.trim() || '',
+        email: document.getElementById('email')?.value.trim() || '',
+        phone: document.getElementById('phone')?.value.trim() || '',
+        
+        // Service Details
+        serviceType: document.getElementById('serviceType')?.value || '',
+        pickup: document.getElementById('pickup')?.value.trim() || '',
+        destination: document.getElementById('destination')?.value.trim() || '',
+        
+        // Date & Time
+        date: document.getElementById('date')?.value || '',
+        time: document.getElementById('time')?.value || '',
+        
+        // Passenger & Vehicle
+        passengers: document.getElementById('passengers')?.value || '',
+        vehicle: document.getElementById('vehicle')?.value || '',
+        
+        // Additional Info
+        specialRequests: document.getElementById('specialRequests')?.value.trim() || '',
+        
+        // Source tracking
+        from: 'booking'
+    };
+    
+    // Build query parameters - only include non-empty fields
+    const params = new URLSearchParams();
+    
+    Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+            params.append(key, formData[key]);
+        }
     });
     
-    // Show loading message
+    // Show loading state
     const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Payment System...';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Payment System...';
+    }
     
-    // Redirect after short delay
-    setTimeout(() => {
-        window.location.href = `${paymentSystemURL}?${params.toString()}`;
-    }, 500);
-}
-
-// ===== FLEET RESERVE BUTTONS =====
-function reserveVehicle(vehicleType) {
-    const paymentSystemURL = 'https://shuttle-payment-system.vercel.app/';
-    
-    const params = new URLSearchParams({
-        from: 'fleet',
-        vehicle: vehicleType
-    });
-    
-    // Redirect to payment system with selected vehicle
+    // Redirect immediately (no delay needed)
     window.location.href = `${paymentSystemURL}?${params.toString()}`;
 }
+
