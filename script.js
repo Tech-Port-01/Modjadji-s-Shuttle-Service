@@ -169,6 +169,39 @@ function initBackToTop() {
 }
 
 // === BOOKING FORM FUNCTIONALITY ===
+// function initBookingForm() {
+//     const bookingForm = document.getElementById('bookingForm');
+    
+//     if (bookingForm) {
+//         // Set minimum date to today
+//         const dateInput = document.getElementById('date');
+//         const today = new Date().toISOString().split('T')[0];
+//         dateInput.setAttribute('min', today);
+        
+//         // Handle form submission
+//         bookingForm.addEventListener('submit', function(e) {
+//             e.preventDefault();
+            
+//             // Validate form
+//             if (validateBookingForm()) {
+//                 // Get form data
+//                 const formData = new FormData(bookingForm);
+//                 const data = Object.fromEntries(formData);
+                
+//                 // Show success message
+//                 showNotification('Thank you for your booking request! We will contact you shortly to confirm your reservation.', 'success');
+                
+//                 // Log form data (in production, this would be sent to a server)
+//                 console.log('Booking Request:', data);
+                
+//                 // Reset form
+//                 bookingForm.reset();
+//             }
+//         });
+//     }
+// }
+
+// === BOOKING FORM FUNCTIONALITY (UPDATED) ===
 function initBookingForm() {
     const bookingForm = document.getElementById('bookingForm');
     
@@ -178,25 +211,10 @@ function initBookingForm() {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
         
-        // Handle form submission
+        // Handle form submission - ALWAYS redirect
         bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Validate form
-            if (validateBookingForm()) {
-                // Get form data
-                const formData = new FormData(bookingForm);
-                const data = Object.fromEntries(formData);
-                
-                // Show success message
-                showNotification('Thank you for your booking request! We will contact you shortly to confirm your reservation.', 'success');
-                
-                // Log form data (in production, this would be sent to a server)
-                console.log('Booking Request:', data);
-                
-                // Reset form
-                bookingForm.reset();
-            }
+            submitToPaymentSystem(e);
         });
     }
 }
@@ -607,4 +625,5 @@ function submitToPaymentSystem(event) {
     // Redirect immediately (no delay needed)
     window.location.href = `${paymentSystemURL}?${params.toString()}`;
 }
+
 
